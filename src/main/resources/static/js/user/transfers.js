@@ -1,61 +1,101 @@
-const user = getUser();
-if (!user) location.href = "/index.html";
+document.addEventListener("DOMContentLoaded", () => {
+    loadAccounts();
+    setupTransferType();
+});
 
-const fromSelect = document.getElementById("fromAccount");
-const toSelect = document.getElementById("toAccount");
-const msg = document.getElementById("message");
+function setupTransferType() {
+    const typeSelect = document.getElementById("transferType");
+    typeSelect.addEventListener("change", updateTransferUI);
+    updateTransferUI();
+}
+
+function updateTransferUI() {
+    const type = document.getElementById("transferType").value;
+
+    document.getElementById("toAccountSelectGroup").style.display =
+    type === "SELF" ? "block" : "none";
+
+    document.getElementById("toAccountNumberGroup").style.display =
+    type === "OTHER" ? "block" : "none";
+}
 
 async function loadAccounts() {
-    const accounts = await getUserAccounts(user.id);
+    const user = getUser();
+    if (!user) return;
 
-    fromSelect.innerHTML = "";
-    toSelect.innerHTML = "";
+    try {
+        const accounts = await getUserAccounts(user.id);
 
-    accounts.forEach(acc => {
-        const opt1 = document.createElement("option");
-        opt1.value = acc.id;
-        opt1.innerText = `${acc.accountNumber} (${acc.balance} ₸)`;
+        const fromSelect = document.getElementById("fromAccount");
+        const toSelect = document.getElementById("toAccount");
 
-        const opt2 = opt1.cloneNode(true);
+        fromSelect.innerHTML = "";
+        toSelect.innerHTML = "";
 
-        fromSelect.appendChild(opt1);
-        toSelect.appendChild(opt2);
-    });
+        accounts.forEach(acc => {
+            const option = document.createElement("option");
+            option.value = acc.id;
+            option.textContent = `${acc.accountNumber} (${acc.balance} ₸)`;
+
+            fromSelect.appendChild(option.cloneNode(true));
+            toSelect.appendChild(option);
+        });
+
+    } catch (e) {
+        showMessage(e.message, true);
+    }
 }
 
 async function makeTransfer() {
-    const fromId = Number(fromSelect.value);
-    const toId = Number(toSelect.value);
-    const amount = Number(document.getElementById("amount").value);
-
-    msg.style.color = "red";
+    const type = document.getElementById("transferType").value;
+    const fromAccountId = document.getElementById("fromAccount").value;
+    const amount = document.getElementById("amount").value;
 
     if (!amount || amount <= 0) {
-        msg.innerText = "Enter valid amount";
-        return;
-    }
-
-    if (fromId === toId) {
-        msg.innerText = "Choose different accounts";
+        showMessage("Введите корректную сумму", true);
         return;
     }
 
     try {
+        let toAccountId;
+
+        if (type === "SELF") {
+            toAccountId = document.getElementById("toAccount").value;
+        } else {
+            const accountNumber =
+            document.getElementById("toAccountNumber").value.trim();
+
+            if (!accountNumber) {
+                showMessage("Введите номер счёта получателя", true);
+                return;
+            }
+
+            const account = await api(
+                `${API_BASE}/accounts/by-number/${accountNumber}`
+            );
+            toAccountId = account.id;
+        }
+
         await transferMoney({
-            fromAccountId: fromId,
-            toAccountId: toId,
-            amount: amount
+            fromAccountId,
+            toAccountId,
+            amount
         });
 
-        msg.style.color = "green";
-        msg.innerText = "Transfer successful";
-
-        document.getElementById("amount").value = "";
+        showMessage("Перевод выполнен успешно");
         loadAccounts();
 
     } catch (e) {
-        msg.innerText = e.message;
+        showMessage(e.message, true);
     }
 }
 
-loadAccounts();
+function showMessage(text, error = false) {
+    const el = document.getElementById("message");
+    el.textContent = text;
+    el.style.color = error ? "red" : "green";
+}
+
+
+
+

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>HalykBank — Услуги</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="navbar-container container">
+        <a href="/index.html" class="logo">HalykBank</a>
+        <nav id="nav-links" class="nav-links"></nav>
+    </div>
+</header>
+
+<main class="page">
+    <div class="container">
+        <h1>Услуги банка</h1>
+
+        <div class="services-grid">
+            <div class="service-card" onclick="location.href='/accounts.html'">
+                <h3>Счета</h3>
+                <p>Открытие и управление</p>
+            </div>
+
+            <div class="service-card" onclick="location.href='/transfers.html'">
+                <h3>Переводы</h3>
+                <p>Между счетами и клиентами</p>
+            </div>
+
+            <div class="service-card" onclick="location.href='/transactions.html'">
+                <h3>История операций</h3>
+                <p>Контроль финансов</p>
+            </div>
+
+            <div class="service-card" onclick="location.href='/news.html'">
+                <h3>Новости</h3>
+                <p>Обновления банка</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">© 2025 HalykBank</footer>
+
+<script src="/js/navbar.js"></script>
+<script src="/js/core/storage.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/user/services.js"></script>
+</body>
+</html>
+
+
+
+

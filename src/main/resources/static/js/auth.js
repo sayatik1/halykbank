@@ -11,15 +11,15 @@ async function loginUser() {
             body: JSON.stringify({ email, password })
         });
 
-        if (!res.ok) throw new Error("Login failed");
+        if (!res.ok) throw new Error("Неверный email или пароль");
 
         const user = await res.json();
-        saveUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
 
         if (user.role.name === "ADMIN") {
             window.location.href = "/admin/admin.html";
         } else {
-            window.location.href = "/dashboard/dashboard.html";
+            window.location.href = "/accounts.html";
         }
     } catch (e) {
         document.getElementById("error").innerText = e.message;
@@ -38,10 +38,12 @@ async function registerUser() {
             body: JSON.stringify({ fullName, email, password })
         });
 
-        if (!res.ok) throw new Error("Registration failed");
+        if (!res.ok) throw new Error("Ошибка регистрации");
 
-        window.location.href = "/index.html";
+        window.location.href = "/login.html";
     } catch (e) {
         document.getElementById("error").innerText = e.message;
     }
 }
+
+

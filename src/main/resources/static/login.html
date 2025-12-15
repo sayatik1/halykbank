@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>HalykBank — Вход</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="navbar-container container">
+        <a href="/index.html" class="logo">HalykBank</a>
+        <nav id="nav-links" class="nav-links"></nav>
+    </div>
+</header>
+
+<main class="auth-page">
+    <div class="auth-card">
+        <h2>Вход</h2>
+        <input id="email" type="email" placeholder="Email">
+        <input id="password" type="password" placeholder="Пароль">
+        <button class="primary-btn" onclick="loginUser()">Войти</button>
+        <p id="error" class="form-error"></p>
+    </div>
+</main>
+
+<script src="/js/navbar.js"></script>
+<script src="/js/auth.js"></script>
+</body>
+</html>
+
+

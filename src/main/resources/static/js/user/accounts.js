@@ -5,29 +5,44 @@ if (!user) {
 
 async function loadAccounts() {
     const container = document.getElementById("accounts");
-    container.innerHTML = "Loading...";
+    container.innerHTML = "Загрузка...";
 
     try {
         const accounts = await getUserAccounts(user.id);
         container.innerHTML = "";
 
         if (accounts.length === 0) {
-            container.innerHTML = "<p>No accounts yet</p>";
+            container.innerHTML = "<p>У вас пока нет счетов</p>";
             return;
         }
 
-        accounts.forEach(acc => {
-            const div = document.createElement("div");
-            div.className = "account-card";
+        accounts.forEach((acc, index) => {
+            const card = document.createElement("div");
+            card.className = "account-card";
 
-            div.innerHTML = `
-                <h3>${acc.accountNumber}</h3>
-                <div class="balance">${acc.balance} ₸</div>
-                <button onclick="depositMoney(${acc.id})">Deposit</button>
+            card.innerHTML = `
+                <div class="account-title">
+                    Счёт №${index + 1}
+                </div>
+
+                <div class="account-number">
+                    ${acc.accountNumber}
+                </div>
+
+                <div class="account-balance">
+                    ${acc.balance} ₸
+                </div>
+
+                <div class="account-actions">
+                    <button onclick="depositMoney(${acc.id})">
+                        Пополнить
+                    </button>
+                </div>
             `;
 
-            container.appendChild(div);
+            container.appendChild(card);
         });
+
     } catch (e) {
         container.innerText = e.message;
     }
@@ -35,11 +50,11 @@ async function loadAccounts() {
 
 async function openAccount() {
     await createAccount(user.id);
-    loadAccounts();
+    loadAccounts(); // новый счёт сразу появляется карточкой
 }
 
 async function depositMoney(accountId) {
-    const amount = prompt("Enter amount");
+    const amount = prompt("Введите сумму пополнения:");
     if (!amount) return;
 
     await deposit(accountId, amount);
@@ -47,3 +62,4 @@ async function depositMoney(accountId) {
 }
 
 loadAccounts();
+

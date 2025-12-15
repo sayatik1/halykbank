@@ -1,49 +1,54 @@
-const user = getUser();
-if (!user) location.href = "/index.html";
+document.addEventListener("DOMContentLoaded", async () => {
+    const user = getUser();
+    if (!user) return;
 
-const select = document.getElementById("accountSelect");
-const tbody = document.getElementById("transactions");
+    const select = document.getElementById("accountSelect");
+    const table = document.getElementById("transactionsTable");
 
-async function loadAccounts() {
+    // Загружаем счета пользователя
     const accounts = await getUserAccounts(user.id);
-    select.innerHTML = "";
 
-    accounts.forEach(acc => {
-        const opt = document.createElement("option");
-        opt.value = acc.id;
-        opt.innerText = acc.accountNumber;
-        select.appendChild(opt);
-    });
+    select.innerHTML = accounts.map(a =>
+    `<option value="${a.id}">
+        ${a.accountNumber} (${a.balance} ₸)
+    </option>`
+    ).join("");
 
     if (accounts.length > 0) {
         loadTransactions(accounts[0].id);
     }
-}
 
-async function loadTransactions(accountId) {
-    tbody.innerHTML = "<tr><td colspan='3'>Loading...</td></tr>";
+    select.addEventListener("change", () => {
+        loadTransactions(select.value);
+    });
 
-    const txs = await getTransactions(accountId);
-    tbody.innerHTML = "";
+    async function loadTransactions(accountId) {
+        table.innerHTML = "";
 
-    if (txs.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='3'>No transactions</td></tr>";
-        return;
+        const transactions = await getTransactions(accountId);
+
+        if (transactions.length === 0) {
+            table.innerHTML = `<tr><td colspan="3">Нет операций</td></tr>`;
+            return;
+        }
+
+        table.innerHTML = transactions.map(t => `
+            <tr>
+                <td>${new Date(t.createdAt).toLocaleString()}</td>
+                <td>${translateType(t.type)}</td>
+                <td>${t.amount} ₸</td>
+            </tr>
+        `).join("");
     }
 
-    txs.forEach(tx => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${tx.createdAt.replace("T", " ")}</td>
-            <td class="tx-${tx.type}">${tx.type}</td>
-            <td>${tx.amount} ₸</td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-select.addEventListener("change", () => {
-    loadTransactions(select.value);
+    function translateType(type) {
+        switch (type) {
+            case "DEPOSIT": return "Пополнение";
+            case "WITHDRAW": return "Списание";
+            case "TRANSFER_OUT": return "Перевод (исходящий)";
+            case "TRANSFER_IN": return "Перевод (входящий)";
+            default: return type;
+        }
+    }
 });
 
-loadAccounts();

@@ -5,6 +5,8 @@ import com.example.bankapp.entity.User;
 import com.example.bankapp.service.AccountService;
 import com.example.bankapp.service.UserService;
 import org.springframework.web.bind.annotation.*;
+import com.example.bankapp.entity.Account;
+
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -62,6 +64,19 @@ public class AccountController {
     public List<AccountDto> getAllAccounts() {
         return accountService.getAllAccounts();
     }
+
+    @GetMapping("/by-number/{accountNumber}")
+    public AccountDto getByAccountNumber(@PathVariable String accountNumber) {
+
+        Account account = accountService.getByAccountNumber(accountNumber);
+
+        return new AccountDto(
+                account.getId(),
+                account.getAccountNumber(),
+                account.getBalance()
+        );
+    }
+
 
 }
 

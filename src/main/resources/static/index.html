@@ -2,31 +2,61 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>HalykBank – Login</title>
+    <title>HalykBank — Главная</title>
     <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="/css/auth.css">
 </head>
 <body>
 
-<div class="auth-container">
-    <div class="auth-box">
-        <h2>HalykBank</h2>
-
-        <input id="email" placeholder="Email">
-        <input id="password" type="password" placeholder="Password">
-
-        <button onclick="loginUser()">Login</button>
-
-        <p id="error" style="color:red;"></p>
-
-        <p>
-            No account?
-            <a href="/register.html">Register</a>
-        </p>
+<header class="navbar">
+    <div class="navbar-container container">
+        <a href="/index.html" class="logo">HalykBank</a>
+        <nav id="nav-links" class="nav-links"></nav>
     </div>
-</div>
+</header>
 
-<script src="/js/core/storage.js"></script>
-<script src="/js/auth.js"></script>
+<main>
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Онлайн-банкинг нового поколения</h1>
+            <p>Управляйте счетами, переводами и услугами в одном месте</p>
+            <button id="startBtn" class="primary-btn">Начать пользоваться</button>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Возможности</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Счета</h3>
+                    <p>Полный контроль над финансами</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Переводы</h3>
+                    <p>Быстро и безопасно</p>
+                </div>
+                <div class="feature-card">
+                    <h3>История</h3>
+                    <p>Все операции под рукой</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    © 2025 HalykBank. Учебный проект
+</footer>
+
+<script src="/js/navbar.js"></script>
+<script>
+    document.getElementById("startBtn").onclick = () => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        window.location.href = user ? "/accounts.html" : "/login.html";
+    };
+</script>
 </body>
 </html>
+
+
+

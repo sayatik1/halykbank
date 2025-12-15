@@ -81,6 +81,15 @@ public class AccountService {
                 ))
                 .toList();
     }
+    public Account getByAccountNumber(String accountNumber) {
+        if (accountNumber == null || accountNumber.isBlank()) {
+            throw new RuntimeException("Account number is required");
+        }
+
+        return accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+    }
+
 
 }
 

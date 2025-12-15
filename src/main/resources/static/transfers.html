@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>HalykBank — Переводы</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="navbar-container container">
+        <a href="/index.html" class="logo">HalykBank</a>
+        <nav id="nav-links" class="nav-links"></nav>
+    </div>
+</header>
+
+<main class="page">
+    <div class="container small">
+        <h1>Переводы</h1>
+
+        <div class="form-group">
+            <label>Тип перевода</label>
+            <select id="transferType">
+                <option value="SELF">Между моими счетами</option>
+                <option value="OTHER">Другому пользователю</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Счёт отправителя</label>
+            <select id="fromAccount"></select>
+        </div>
+
+        <div class="form-group" id="toAccountSelectGroup">
+            <label>Счёт получателя</label>
+            <select id="toAccount"></select>
+        </div>
+
+        <div class="form-group" id="toAccountNumberGroup" style="display:none">
+            <label>Номер счёта</label>
+            <input id="toAccountNumber">
+        </div>
+
+        <div class="form-group">
+            <label>Сумма</label>
+            <input id="amount" type="number">
+        </div>
+
+        <button class="primary-btn" onclick="makeTransfer()">Перевести</button>
+        <p id="message"></p>
+    </div>
+</main>
+
+<footer class="footer">© 2025 HalykBank</footer>
+
+<script src="/js/navbar.js"></script>
+<script src="/js/core/storage.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/user/transfers.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
