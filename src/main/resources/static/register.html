@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>HalykBank – Register</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+
+<div class="auth-container">
+    <div class="auth-box">
+        <h2>Create account</h2>
+
+        <input id="fullName" placeholder="Full name">
+        <input id="email" placeholder="Email">
+        <input id="password" type="password" placeholder="Password">
+
+        <button onclick="registerUser()">Register</button>
+
+        <p id="error" style="color:red;"></p>
+
+        <p>
+            Already have account?
+            <a href="/index.html">Login</a>
+        </p>
+    </div>
+</div>
+
+<script src="/js/auth.js"></script>
+</body>
+</html>

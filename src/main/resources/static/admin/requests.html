@@ -1,0 +1,39 @@
+<h1>Service Requests</h1>
+<table class="admin-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Service</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody id="reqs"></tbody>
+</table>
+
+<script src="/js/api.js"></script>
+<script>
+    api("http://localhost:8888/api/requests/user/1") // demo
+        .then(reqs => {
+        const tbody = document.getElementById("reqs");
+        reqs.forEach(r => {
+            tbody.innerHTML += `
+        <tr>
+            <td>${r.id}</td>
+            <td>${r.user.fullName}</td>
+            <td>${r.service.name}</td>
+            <td>${r.status}</td>
+            <td>
+                <button onclick="update(${r.id},'APPROVED')">✔</button>
+                <button onclick="update(${r.id},'REJECTED')">✖</button>
+            </td>
+        </tr>`;
+        });
+    });
+
+    function update(id,status){
+        fetch(`/api/requests/${id}/status?status=${status}`,{method:"PUT"})
+            .then(()=>location.reload());
+    }
+</script>

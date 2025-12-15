@@ -1,0 +1,28 @@
+<h1>Accounts</h1>
+<table class="admin-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Account</th>
+        <th>Balance</th>
+        <th>User</th>
+    </tr>
+    </thead>
+    <tbody id="accounts"></tbody>
+</table>
+
+<script src="/js/api.js"></script>
+<script>
+    api("http://localhost:8888/api/accounts").then(accs => {
+        const tbody = document.getElementById("accounts");
+        accs.forEach(a => {
+            tbody.innerHTML += `
+        <tr>
+            <td>${a.id}</td>
+            <td>${a.accountNumber}</td>
+            <td>${a.balance}</td>
+            <td>${a.user?.fullName || "-"}</td>
+        </tr>`;
+        });
+    });
+</script>

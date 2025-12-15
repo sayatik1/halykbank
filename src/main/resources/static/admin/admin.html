@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <div id="sidebar"></div>
+
+    <div class="content">
+        <div id="navbar"></div>
+
+        <div class="page">
+            <h1>Admin Dashboard</h1>
+            <p>Choose section from sidebar</p>
+        </div>
+    </div>
+</div>
+
+<script src="/js/core/storage.js"></script>
+<script>
+    const user = getUser();
+    if (!user || user.role.name !== "ADMIN") {
+        location.href = "/index.html";
+    }
+
+    fetch("/components/sidebar.html")
+        .then(r => r.text())
+        .then(h => {
+        document.getElementById("sidebar").innerHTML = h;
+        document.querySelector(".sidebar-menu").innerHTML = `
+                <a href="/admin/users.html">Users</a>
+                <a href="/admin/accounts.html">Accounts</a>
+                <a href="/admin/transactions.html">Transactions</a>
+                <a href="/admin/requests.html">Requests</a>
+                <a href="/admin/news.html">News</a>
+            `;
+    });
+
+    fetch("/components/navbar.html")
+        .then(r => r.text())
+        .then(h => document.getElementById("navbar").innerHTML = h);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Inter, Arial, sans-serif;
+    background-color: #f5f6fa;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background-color: #4a6cf7;
+    color: white;
+}
+
+button:hover {
+    background-color: #3b5bdb;
+}
