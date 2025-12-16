@@ -1,56 +1,104 @@
-const API = "http://localhost:8888/api/accounts";
-const body = document.getElementById("accounts-body");
-
-async function loadAll() {
-    const res = await fetch(API);
-    const data = await res.json();
-    render(data);
+const user = getUser();
+if (!user) {
+    window.location.href = "/login.html";
 }
 
-async function loadByUser() {
-    const id = document.getElementById("searchUserId").value;
-    const res = await fetch(`${API}/user/${id}`);
-    const data = await res.json();
-    render(data);
-}
+const container = document.getElementById("accountsContainer");
 
-async function createAccount() {
-    const userId = document.getElementById("createUserId").value;
-    await fetch(`${API}/create/${userId}`, { method: "POST" });
-    loadAll();
-}
+// ================= LOAD =================
+async function loadAccounts() {
+    container.innerHTML = "Загрузка...";
 
-async function removeAccount(id) {
-    if (!confirm("Удалить счёт?")) return;
-    await fetch(`${API}/${id}`, { method: "DELETE" });
-    loadAll();
-}
+    try {
+        const accounts = await getUserAccounts(user.id);
 
-function render(accounts) {
-    body.innerHTML = "";
+        if (!accounts || accounts.length === 0) {
+            container.innerHTML = "<p>У вас пока нет счетов</p>";
+            return;
+        }
 
-    accounts.forEach(a => {
-        const canDelete = a.transactionsCount === 0;
+        container.innerHTML = "";
 
-        body.innerHTML += `
-        <tr>
-            <td>${a.id}</td>
-            <td>${a.accountNumber}</td>
-            <td>${a.balance}</td>
-            <td>${a.userId}</td>
-            <td>${a.transactionsCount}</td>
-            <td>
-                <button
-                    ${canDelete ? "" : "disabled"}
-                    onclick="removeAccount(${a.id})">
-                    Удалить
+        accounts.forEach(acc => {
+            const card = document.createElement("div");
+            card.className = "feature-card";
+
+            card.innerHTML = `
+                <h3>Счёт</h3>
+                <p>${acc.accountNumber}</p>
+                <strong>${acc.balance} ₸</strong>
+
+                <div class="form-group">
+                    <input
+                        type="number"
+                        placeholder="Сумма пополнения"
+                        id="amount-${acc.id}"
+                    >
+                </div>
+
+                <button onclick="depositMoney(${acc.id})">
+                    Пополнить
                 </button>
-            </td>
-        </tr>
-        `;
-    });
+
+                <button
+                    style="margin-top:10px; background:#dc2626"
+                    onclick="deleteAccount(${acc.id}, ${acc.transactionsCount})"
+                    ${acc.transactionsCount > 0 ? "disabled" : ""}
+                >
+                    Удалить счёт
+                </button>
+            `;
+
+            container.appendChild(card);
+        });
+
+    } catch (e) {
+        container.innerHTML = `<p style="color:red">${e.message}</p>`;
+    }
 }
 
-loadAll();
+// ================= DEPOSIT =================
+async function depositMoney(accountId) {
+    const input = document.getElementById(`amount-${accountId}`);
+    const amount = Number(input.value);
+
+    if (!amount || amount <= 0) {
+        alert("Введите корректную сумму");
+        return;
+    }
+
+    try {
+        await deposit(accountId, amount);
+        input.value = "";
+        loadAccounts();
+    } catch (e) {
+        alert(e.message);
+    }
+}
+
+// ================= DELETE =================
+async function deleteAccount(accountId, transactionsCount) {
+    if (transactionsCount > 0) {
+        alert("Нельзя удалить счёт с операциями");
+        return;
+    }
+
+    if (!confirm("Вы уверены, что хотите удалить счёт?")) return;
+
+    try {
+        await fetch(`http://localhost:8888/api/accounts/${accountId}`, {
+            method: "DELETE"
+        });
+        loadAccounts();
+    } catch (e) {
+        alert("Ошибка при удалении");
+    }
+}
+
+// ================= INIT =================
+document.addEventListener("DOMContentLoaded", loadAccounts);
+
+
+
 
 

@@ -49,12 +49,15 @@
 </footer>
 
 <script src="/js/navbar.js"></script>
+<script src="/js/user/user-guard.js"></script>
+<script src="/js/user/accounts.js"></script>
+
 <script>
     document.getElementById("startBtn").onclick = () => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        window.location.href = user ? "/accounts.html" : "/login.html";
+        window.location.href = "/user/accounts.html";
     };
 </script>
+
 </body>
 </html>
 

@@ -1,6 +1,6 @@
 const API = "http://localhost:8888/api";
 
-// ================= LOGIN =================
+// ===== LOGIN =====
 async function loginUser() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -14,23 +14,21 @@ async function loginUser() {
 
         if (!res.ok) throw new Error("Неверный email или пароль");
 
-        const rawUser = await res.json();
+        const raw = await res.json();
 
-        // ❗ храним роль КАК СТРОКУ
         const user = {
-            id: rawUser.id,
-            fullName: rawUser.fullName,
-            email: rawUser.email,
-            role: rawUser.role.name // "ADMIN" | "USER"
+            id: raw.id,
+            fullName: raw.fullName,
+            email: raw.email,
+            role: raw.role.name // "ADMIN" | "USER"
         };
 
         localStorage.setItem("user", JSON.stringify(user));
 
-        // ✅ правильный редирект
         if (user.role === "ADMIN") {
-            window.location.href = "/admin/index.html";
+            window.location.replace("/admin/index.html");
         } else {
-            window.location.href = "/user/index.html";
+            window.location.replace("/user/index.html");
         }
 
     } catch (e) {
@@ -38,7 +36,7 @@ async function loginUser() {
     }
 }
 
-// ================= REGISTER =================
+// ===== REGISTER =====
 async function registerUser() {
     const fullName = document.getElementById("fullName").value;
     const email = document.getElementById("email").value;
@@ -53,8 +51,10 @@ async function registerUser() {
 
         if (!res.ok) throw new Error("Ошибка регистрации");
 
-        window.location.href = "/user/index.html";
+        window.location.replace("/login.html");
+
     } catch (e) {
         document.getElementById("error").innerText = e.message;
     }
 }
+
