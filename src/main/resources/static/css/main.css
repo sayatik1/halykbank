@@ -357,6 +357,44 @@ select:focus {
     color: var(--text-muted);
     line-height: 1.5;
 }
+/* ================= NAVBAR FIX ================= */
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--text-main);
+}
+
+.nav-links a:hover {
+    color: var(--green-main);
+}
+
+.nav-user {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nav-username {
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.logout-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+}
 
 
 

@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Пользователи</title>
+    <title>Админ — Заявки</title>
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -21,18 +21,19 @@
 
 <main class="page">
     <div class="container">
-        <h1>Пользователи</h1>
+        <h1>Заявки пользователей</h1>
 
         <table class="table">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Имя</th>
-                <th>Email</th>
-                <th>Роль</th>
+                <th>Пользователь</th>
+                <th>Услуга</th>
+                <th>Статус</th>
+                <th>Дата</th>
             </tr>
             </thead>
-            <tbody id="users-table"></tbody>
+            <tbody id="requestsBody"></tbody>
         </table>
     </div>
 </main>
@@ -40,6 +41,7 @@
 <footer class="footer">© 2025 HalykBank</footer>
 
 <script src="/js/navbar.js"></script>
-<script src="/js/admin/users.js"></script>
+<script src="/js/admin/admin-guard.js"></script>
+<script src="/js/admin/requests.js"></script>
 </body>
 </html>

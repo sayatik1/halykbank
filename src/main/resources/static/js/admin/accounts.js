@@ -1,14 +1,14 @@
 const API = "http://localhost:8888/api/accounts";
-const body = document.getElementById("accountsBody");
+const body = document.getElementById("accounts-body");
 
-// ===== ЗАГРУЗИТЬ ВСЕ =====
+// ===== LOAD ALL =====
 async function loadAll() {
     const res = await fetch(API);
     const data = await res.json();
     render(data);
 }
 
-// ===== ПОИСК ПО USER ID =====
+// ===== SEARCH BY USER =====
 async function searchByUser() {
     const userId = document.getElementById("searchUserId").value;
     if (!userId) return;
@@ -18,65 +18,66 @@ async function searchByUser() {
     render(data);
 }
 
-// ===== СОЗДАНИЕ =====
+// ===== CREATE =====
 async function createAccount() {
     const userId = document.getElementById("createUserId").value;
-    if (!userId) return alert("Введите ID пользователя");
+    if (!userId) {
+        alert("Введите ID пользователя");
+        return;
+    }
 
-    await fetch(`${API}/create/${userId}`, {
-        method: "POST"
-    });
-
+    await fetch(`${API}/create/${userId}`, { method: "POST" });
     loadAll();
 }
 
-// ===== УДАЛЕНИЕ =====
-async function removeAccount(id, transactionsCount) {
+// ===== DELETE =====
+async function removeAccount(accountId, transactionsCount) {
     if (transactionsCount > 0) {
-        alert("Нельзя удалить счёт с транзакциями");
+        alert("Нельзя удалить счёт с операциями");
         return;
     }
 
     if (!confirm("Удалить счёт?")) return;
 
-    const res = await fetch(`${API}/${id}`, {
-        method: "DELETE"
-    });
-
-    if (!res.ok) {
-        alert("Ошибка при удалении");
-        return;
-    }
-
+    await fetch(`${API}/${accountId}`, { method: "DELETE" });
     loadAll();
 }
 
-// ===== ОТРИСОВКА =====
-function render(data) {
-    body.innerHTML = data.map(a => `
-        <tr>
-            <td>${a.id}</td>
-            <td>${a.accountNumber}</td>
-            <td>${a.balance}</td>
-            <td>${a.userId}</td>
-            <td>
-                ${a.transactionsCount > 0
-                    ? `<span class="badge danger">Есть (${a.transactionsCount})</span>`
-                    : `<span class="badge success">Нет</span>`
-                }
-            </td>
-            <td>
-                <button
-                    ${a.transactionsCount > 0 ? "disabled" : ""}
-                    onclick="removeAccount(${a.id}, ${a.transactionsCount})">
-                    Удалить
-                </button>
-            </td>
-        </tr>
-    `).join("");
+// ===== RENDER =====
+function render(accounts) {
+    body.innerHTML = "";
+
+    if (!accounts || accounts.length === 0) {
+        body.innerHTML = `<tr><td colspan="6">Нет данных</td></tr>`;
+        return;
+    }
+
+    accounts.forEach(a => {
+        body.innerHTML += `
+            <tr>
+                <td>${a.id}</td>
+                <td>${a.accountNumber}</td>
+                <td>${a.balance} ₸</td>
+                <td>${a.userId}</td>
+                <td>
+                    ${a.transactionsCount > 0
+                        ? `Есть (${a.transactionsCount})`
+                        : `Нет`
+                    }
+                </td>
+                <td>
+                    <button
+                        ${a.transactionsCount > 0 ? "disabled" : ""}
+                        onclick="removeAccount(${a.id}, ${a.transactionsCount})">
+                        Удалить
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
 }
 
 // ===== INIT =====
-loadAll();
+document.addEventListener("DOMContentLoaded", loadAll);
 
 

@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Админ — Транзакции</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 
+<header class="navbar">
+    <div class="navbar-container container">
+        <a href="/index.html" class="logo">HalykBank</a>
+
+        <nav class="nav">
+            <div id="nav-links" class="nav-links"></div>
+            <div id="nav-user" class="nav-user"></div>
+        </nav>
+    </div>
+</header>
+
+
+<main class="page">
+    <div class="container">
+        <h1>Все транзакции</h1>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Счёт</th>
+                <th>Тип</th>
+                <th>Сумма</th>
+                <th>Дата</th>
+            </tr>
+            </thead>
+            <tbody id="transactionsBody"></tbody>
+        </table>
+    </div>
+</main>
+
+<footer class="footer">© 2025 HalykBank</footer>
+
+<script src="/js/navbar.js"></script>
+<script src="/js/admin/admin-guard.js"></script>
+<script src="/js/admin/transactions.js"></script>
 </body>
 </html>
