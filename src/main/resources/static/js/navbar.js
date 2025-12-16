@@ -30,6 +30,7 @@ function renderNavbar() {
             <a href="/admin/accounts.html">Счета</a>
             <a href="/admin/users.html">Пользователи</a>
             <a href="/admin/transactions.html">Транзакции</a>
+            <a href="/admin/requests.html">Заявки</a>
             <a href="/admin/news.html">Новости</a>
         `;
 
@@ -57,6 +58,7 @@ function renderNavbar() {
 }
 
 document.addEventListener("DOMContentLoaded", renderNavbar);
+
 
 
 

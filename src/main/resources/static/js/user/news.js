@@ -1,19 +1,25 @@
 const user = getUser();
-if (!user) location.href = "/index.html";
+if (!user) {
+    window.location.href = "/login.html";
+}
 
-const container = document.getElementById("news");
+const container = document.getElementById("newsList");
+const API = "http://localhost:8888/api/news";
 
+// ================= LOAD =================
 async function loadNews() {
-    container.innerHTML = "Loading...";
+    container.innerHTML = "Загрузка...";
 
     try {
-        const news = await getAllNews();
-        container.innerHTML = "";
+        const res = await fetch(API);
+        const news = await res.json();
 
-        if (news.length === 0) {
-            container.innerHTML = "<p>No news yet</p>";
+        if (!news || news.length === 0) {
+            container.innerHTML = "<p>Новостей пока нет</p>";
             return;
         }
+
+        container.innerHTML = "";
 
         news.forEach(n => {
             const div = document.createElement("div");
@@ -22,16 +28,17 @@ async function loadNews() {
             div.innerHTML = `
                 <h3>${n.title}</h3>
                 <p>${n.content}</p>
-                <div class="news-meta">
-                    ${n.createdAt.replace("T", " ")}
-                </div>
+                <small>${new Date(n.createdAt).toLocaleString()}</small>
             `;
 
             container.appendChild(div);
         });
+
     } catch (e) {
-        container.innerText = e.message;
+        container.innerHTML = `<p style="color:red">${e.message}</p>`;
     }
 }
 
-loadNews();
+// ================= INIT =================
+document.addEventListener("DOMContentLoaded", loadNews);
+

@@ -18,12 +18,18 @@
     </div>
 </header>
 
-
 <main class="page">
     <div class="container">
         <h1>Мои счета</h1>
 
-        <!-- 📦 контейнер счетов -->
+        <!-- ➕ СОЗДАНИЕ СЧЁТА -->
+        <div class="form-group" style="max-width:400px;margin-bottom:30px">
+            <button class="primary-btn" onclick="createNewAccount()">
+                Создать новый счёт
+            </button>
+        </div>
+
+        <!-- 📦 КОНТЕЙНЕР СЧЕТОВ -->
         <div id="accountsContainer" class="cards-grid"></div>
     </div>
 </main>
@@ -40,5 +46,3 @@
 
 </body>
 </html>
-
-

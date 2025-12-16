@@ -18,22 +18,29 @@
     </div>
 </header>
 
-
 <main class="page">
     <div class="container">
-        <h1>Новости</h1>
 
-        <div class="form-group">
-            <input id="title" placeholder="Заголовок">
+        <h1>Управление новостями</h1>
+
+        <!-- ===== CREATE NEWS ===== -->
+        <div class="feature-card">
+            <h3>Добавить новость</h3>
+
+            <div class="form-group">
+                <input id="title" placeholder="Заголовок новости">
+            </div>
+
+            <div class="form-group">
+                <textarea id="content" placeholder="Текст новости"></textarea>
+            </div>
+
+            <button onclick="createNews()">Опубликовать</button>
         </div>
 
-        <div class="form-group">
-            <textarea id="content" placeholder="Текст новости"></textarea>
-        </div>
-
-        <button onclick="createNews()">Добавить новость</button>
-
+        <h2 style="margin-top:40px">Все новости</h2>
         <div id="newsList" class="news-list"></div>
+
     </div>
 </main>
 

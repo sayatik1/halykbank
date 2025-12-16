@@ -41,7 +41,7 @@ async function loadAccounts() {
                 </button>
 
                 <button
-                    style="margin-top:10px; background:#dc2626"
+                    style="margin-top:10px;background:#dc2626"
                     onclick="deleteAccount(${acc.id}, ${acc.transactionsCount})"
                     ${acc.transactionsCount > 0 ? "disabled" : ""}
                 >
@@ -54,6 +54,18 @@ async function loadAccounts() {
 
     } catch (e) {
         container.innerHTML = `<p style="color:red">${e.message}</p>`;
+    }
+}
+
+// ================= CREATE =================
+async function createNewAccount() {
+    if (!confirm("Создать новый счёт?")) return;
+
+    try {
+        await createAccount(user.id);
+        loadAccounts();
+    } catch (e) {
+        alert("Ошибка при создании счёта");
     }
 }
 
@@ -97,8 +109,3 @@ async function deleteAccount(accountId, transactionsCount) {
 
 // ================= INIT =================
 document.addEventListener("DOMContentLoaded", loadAccounts);
-
-
-
-
-

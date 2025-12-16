@@ -2,6 +2,7 @@ package com.example.bankapp.service;
 
 import com.example.bankapp.entity.News;
 import com.example.bankapp.entity.User;
+import com.example.bankapp.exception.NotFoundException;
 import com.example.bankapp.repository.NewsRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +17,21 @@ public class NewsService {
         this.newsRepository = newsRepository;
     }
 
-    public News createNews(String title, String content, User author) {
+    // Создание новости
+    public News create(String title, String content, User author) {
         News news = new News(title, content, author);
         return newsRepository.save(news);
     }
 
-    public List<News> getAllNews() {
+    // Получить все новости
+    public List<News> getAll() {
         return newsRepository.findAll();
     }
-}
 
+    // Удалить новость
+    public void delete(Long id) {
+        News news = newsRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Новость не найдена"));
+        newsRepository.delete(news);
+    }
+}

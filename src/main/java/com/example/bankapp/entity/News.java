@@ -14,14 +14,14 @@ public class News {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 2000)
     private String content;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    // ===== RELATION: NEWS -> USER (AUTHOR) =====
-    @ManyToOne
+    // Автор новости (ADMIN)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
@@ -37,7 +37,7 @@ public class News {
         this.createdAt = LocalDateTime.now();
     }
 
-    // ===== Getters & Setters =====
+    // ===== Getters =====
     public Long getId() {
         return id;
     }
@@ -46,16 +46,8 @@ public class News {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getContent() {
         return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -64,9 +56,5 @@ public class News {
 
     public User getAuthor() {
         return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
     }
 }

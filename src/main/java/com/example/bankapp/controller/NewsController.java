@@ -1,5 +1,6 @@
 package com.example.bankapp.controller;
 
+import com.example.bankapp.dto.NewsRequest;
 import com.example.bankapp.entity.News;
 import com.example.bankapp.entity.User;
 import com.example.bankapp.service.NewsService;
@@ -15,26 +16,42 @@ public class NewsController {
     private final NewsService newsService;
     private final UserService userService;
 
-    public NewsController(NewsService newsService,
-                          UserService userService) {
+    public NewsController(NewsService newsService, UserService userService) {
         this.newsService = newsService;
         this.userService = userService;
     }
 
-    // Создать новость (админ)
-    @PostMapping("/create")
-    public News create(@RequestParam Long authorId,
-                       @RequestParam String title,
-                       @RequestParam String content) {
+    // =========================
+    // CREATE NEWS (ADMIN)
+    // POST /api/news
+    // =========================
+    @PostMapping
+    public News create(@RequestBody NewsRequest request) {
 
-        User author = userService.getUserById(authorId);
-        return newsService.createNews(title, content, author);
+        User author = userService.getUserById(request.getAuthorId());
+
+        return newsService.create(
+                request.getTitle(),
+                request.getContent(),
+                author
+        );
     }
 
-    // Получить все новости
+    // =========================
+    // GET ALL NEWS
+    // GET /api/news
+    // =========================
     @GetMapping
     public List<News> getAll() {
-        return newsService.getAllNews();
+        return newsService.getAll();
+    }
+
+    // =========================
+    // DELETE NEWS (ADMIN)
+    // DELETE /api/news/{id}
+    // =========================
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        newsService.delete(id);
     }
 }
-
