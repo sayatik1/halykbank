@@ -20,78 +20,53 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    // ===== CREATE =====
     @Transactional
     public Account createAccount(User user) {
-        if (user == null || user.getId() == null) {
-            throw new RuntimeException("User must exist");
-        }
-
         Account account = new Account();
         account.setUser(user);
         account.setBalance(BigDecimal.ZERO);
-        account.setAccountNumber(generateAccountNumber());
-
+        account.setAccountNumber("ACC-" + UUID.randomUUID().toString().substring(0, 8));
         return accountRepository.save(account);
     }
 
-    // ===== INTERNAL =====
     public Account getAccountById(Long id) {
-        if (id == null) {
-            throw new RuntimeException("Account id is required");
-        }
-
         return accountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
-    }
-
-    // ===== DTO RETURN =====
-    public List<AccountDto> getUserAccounts(Long userId) {
-        if (userId == null) {
-            throw new RuntimeException("User id is required");
-        }
-
-        return accountRepository.findByUserId(userId)
-                .stream()
-                .map(a -> new AccountDto(
-                        a.getId(),
-                        a.getAccountNumber(),
-                        a.getBalance()
-                ))
-                .toList();
-    }
-
-    // ===== BALANCE =====
-    public BigDecimal getBalance(Long accountId) {
-        return getAccountById(accountId).getBalance();
-    }
-
-    // ===== UTIL =====
-    private String generateAccountNumber() {
-        return "ACC-" + UUID.randomUUID().toString().substring(0, 10);
     }
 
     public List<AccountDto> getAllAccounts() {
         return accountRepository.findAll()
                 .stream()
-                .map(a -> new AccountDto(
-                        a.getId(),
-                        a.getAccountNumber(),
-                        a.getBalance()
-                ))
+                .map(this::toDto)
                 .toList();
     }
-    public Account getByAccountNumber(String accountNumber) {
-        if (accountNumber == null || accountNumber.isBlank()) {
-            throw new RuntimeException("Account number is required");
-        }
 
-        return accountRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+    public List<AccountDto> getUserAccounts(Long userId) {
+        return accountRepository.findByUserId(userId)
+                .stream()
+                .map(this::toDto)
+                .toList();
     }
 
+    public void delete(Account account) {
+        accountRepository.delete(account);
+    }
 
+    private AccountDto toDto(Account a) {
+        return new AccountDto(
+                a.getId(),
+                a.getAccountNumber(),
+                a.getBalance(),
+                a.getUser().getId(),
+                a.getTransactions() == null ? 0 : a.getTransactions().size()
+        );
+    }
 }
+
+
+
+
+
 
 
 

@@ -1,28 +1,72 @@
-<h1>Accounts</h1>
-<table class="admin-table">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Account</th>
-        <th>Balance</th>
-        <th>User</th>
-    </tr>
-    </thead>
-    <tbody id="accounts"></tbody>
-</table>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ — Счета</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
 
-<script src="/js/api.js"></script>
+<header class="navbar">
+    <div class="navbar-container container">
+        <a href="/" class="logo">HalykBank</a>
+        <nav id="nav-links" class="nav-links"></nav>
+    </div>
+</header>
+
+<main class="page">
+    <div class="container">
+
+        <h1>Счета пользователей</h1>
+
+        <!-- СОЗДАНИЕ СЧЁТА -->
+        <section class="card">
+            <h3>Создать счёт пользователю</h3>
+            <input id="createUserId" type="number" placeholder="ID пользователя">
+            <button onclick="createAccount()">Создать</button>
+        </section>
+
+        <!-- ПОИСК -->
+        <section class="card">
+            <h3>Поиск счетов по ID пользователя</h3>
+            <input id="searchUserId" type="number" placeholder="ID пользователя">
+            <button onclick="searchByUser()">Найти</button>
+            <button onclick="loadAll()">Показать все</button>
+        </section>
+
+        <!-- ТАБЛИЦА -->
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Номер счёта</th>
+                <th>Баланс</th>
+                <th>ID пользователя</th>
+                <th>Транзакции</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody id="accountsBody"></tbody>
+        </table>
+
+    </div>
+</main>
+
+<script src="/js/navbar.js"></script>
+<script src="/js/admin/admin-guard.js"></script>
+<script src="/js/admin/accounts.js"></script>
+
+
 <script>
-    api("http://localhost:8888/api/accounts").then(accs => {
-        const tbody = document.getElementById("accounts");
-        accs.forEach(a => {
-            tbody.innerHTML += `
-        <tr>
-            <td>${a.id}</td>
-            <td>${a.accountNumber}</td>
-            <td>${a.balance}</td>
-            <td>${a.user?.fullName || "-"}</td>
-        </tr>`;
-        });
-    });
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || user.role !== "ADMIN") {
+        location.href = "/";
+    }
 </script>
+
+</body>
+</html>
+
+
+
+

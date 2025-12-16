@@ -1,11 +1,11 @@
 package com.example.bankapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+import java.math.BigDecimal;
+import java.util.List;
+
 @Entity
 @Table(name = "accounts")
 public class Account {
@@ -17,7 +17,7 @@ public class Account {
     @Column(nullable = false, unique = true)
     private String accountNumber;
 
-    @Column(nullable = false, precision = 19, scale = 2)
+    @Column(nullable = false)
     private BigDecimal balance;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,20 +25,22 @@ public class Account {
     @JsonIgnore
     private User user;
 
-    public Account() {}
-
-    public Account(String accountNumber, BigDecimal balance, User user) {
-        this.accountNumber = accountNumber;
-        this.balance = balance;
-        this.user = user;
-    }
+    @OneToMany(mappedBy = "account")
+    @JsonIgnore
+    private List<Transaction> transactions;
 
     public Long getId() { return id; }
     public String getAccountNumber() { return accountNumber; }
     public BigDecimal getBalance() { return balance; }
+    public User getUser() { return user; }
+    public List<Transaction> getTransactions() { return transactions; }
 
     public void setAccountNumber(String accountNumber) { this.accountNumber = accountNumber; }
     public void setBalance(BigDecimal balance) { this.balance = balance; }
     public void setUser(User user) { this.user = user; }
 }
+
+
+
+
 

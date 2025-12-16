@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>HalykBank — Админ</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="navbar-container container">
+        <a href="/" class="logo">HalykBank</a>
+        <nav id="nav-links" class="nav-links"></nav>
+    </div>
+</header>
+
+<main class="page">
+    <div class="container">
+        <h1 class="page-title">Админ-панель</h1>
+        <p class="page-subtitle">Управление системой</p>
+
+        <div class="cards-grid">
+            <a href="/admin/users.html" class="feature-card">
+                <h3>Пользователи</h3>
+                <p>Просмотр и управление пользователями</p>
+            </a>
+
+            <a href="/admin/accounts.html" class="feature-card">
+                <h3>Счета</h3>
+                <p>Все счета в системе</p>
+            </a>
+
+            <a href="/admin/transactions.html" class="feature-card">
+                <h3>Транзакции</h3>
+                <p>История операций</p>
+            </a>
+
+            <a href="/admin/requests.html" class="feature-card">
+                <h3>Заявки</h3>
+                <p>Запросы пользователей</p>
+            </a>
+
+            <a href="/admin/news.html" class="feature-card">
+                <h3>Новости</h3>
+                <p>Управление новостями</p>
+            </a>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    © 2025 HalykBank
+</footer>
+
+<script src="/js/navbar.js"></script>
+<script src="/js/core/auth.js"></script>
+<script src="/js/admin/admin-guard.js"></script>
+
+</body>
+</html>
+

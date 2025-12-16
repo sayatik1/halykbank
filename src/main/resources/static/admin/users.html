@@ -1,28 +1,40 @@
-<h1>Users</h1>
-<table class="admin-table">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-    </tr>
-    </thead>
-    <tbody id="users"></tbody>
-</table>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Пользователи</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
 
-<script src="/js/api.js"></script>
-<script>
-    api("http://localhost:8888/api/users").then(users => {
-        const tbody = document.getElementById("users");
-        users.forEach(u => {
-            tbody.innerHTML += `
-        <tr>
-            <td>${u.id}</td>
-            <td>${u.fullName}</td>
-            <td>${u.email}</td>
-            <td>${u.role.name}</td>
-        </tr>`;
-        });
-    });
-</script>
+<header class="navbar">
+    <div class="navbar-container container">
+        <a href="/" class="logo">HalykBank</a>
+        <nav id="nav-links"></nav>
+    </div>
+</header>
+
+<main class="page">
+    <div class="container">
+        <h1>Пользователи</h1>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Email</th>
+                <th>Роль</th>
+            </tr>
+            </thead>
+            <tbody id="users-table"></tbody>
+        </table>
+    </div>
+</main>
+
+<footer class="footer">© 2025 HalykBank</footer>
+
+<script src="/js/navbar.js"></script>
+<script src="/js/admin/users.js"></script>
+</body>
+</html>

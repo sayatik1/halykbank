@@ -19,30 +19,34 @@ function renderNavbar() {
         return;
     }
 
-    // ===== АДМИН =====
-    if (user.role && user.role.name === "ADMIN") {
+    // ===== ADMIN =====
+    if (user.role === "ADMIN") {
         nav.innerHTML = `
-            <a href="/">Главная</a>
-            <a href="/admin/admin.html">Админ-панель</a>
-            <span>${user.fullName || user.email}</span>
+            <a href="/admin/index.html">Главная</a>
+            <a href="/admin/accounts.html">Счета</a>
+            <a href="/admin/users.html">Пользователи</a>
+            <a href="/admin/transactions.html">Транзакции</a>
+            <a href="/admin/news.html">Новости</a>
+            <span>Админ ${user.fullName}</span>
             <button onclick="logout()">Выход</button>
         `;
         return;
     }
 
-    // ===== ПОЛЬЗОВАТЕЛЬ =====
+    // ===== USER =====
     nav.innerHTML = `
-        <a href="/">Главная</a>
-        <a href="/accounts.html">Счета</a>
-        <a href="/transactions.html">Операции</a>
-        <a href="/transfers.html">Переводы</a>
-        <a href="/services.html">Услуги</a>
-        <a href="/news.html">Новости</a>
-        <span>${user.fullName || user.email}</span>
+        <a href="/user/index.html">Главная</a>
+        <a href="/user/accounts.html">Счета</a>
+        <a href="/user/transactions.html">Операции</a>
+        <a href="/user/transfers.html">Переводы</a>
+        <a href="/user/services.html">Услуги</a>
+        <a href="/user/news.html">Новости</a>
+        <span>${user.fullName}</span>
         <button onclick="logout()">Выход</button>
     `;
 }
 
 document.addEventListener("DOMContentLoaded", renderNavbar);
+
 
 

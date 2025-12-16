@@ -1,28 +1,10 @@
-<h1>Transactions</h1>
-<table class="admin-table">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Type</th>
-        <th>Amount</th>
-        <th>Date</th>
-    </tr>
-    </thead>
-    <tbody id="txs"></tbody>
-</table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
 
-<script src="/js/api.js"></script>
-<script>
-    api("http://localhost:8888/api/transactions").then(txs => {
-        const tbody = document.getElementById("txs");
-        txs.forEach(t => {
-            tbody.innerHTML += `
-        <tr>
-            <td>${t.id}</td>
-            <td>${t.type}</td>
-            <td>${t.amount}</td>
-            <td>${t.createdAt.replace("T"," ")}</td>
-        </tr>`;
-        });
-    });
-</script>
+</body>
+</html>

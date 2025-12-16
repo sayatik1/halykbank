@@ -1,22 +1,10 @@
-<h1>News</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
 
-<input id="title" placeholder="Title">
-<textarea id="content" placeholder="Content"></textarea>
-<button onclick="create()">Create</button>
-
-<script src="/js/api.js"></script>
-<script src="/js/core/storage.js"></script>
-<script>
-    const user = getUser();
-
-    function create(){
-        api("/api/news",{
-            method:"POST",
-            body:JSON.stringify({
-                title: title.value,
-                content: content.value,
-                authorId: user.id
-            })
-        }).then(()=>alert("Created"));
-    }
-</script>
+</body>
+</html>

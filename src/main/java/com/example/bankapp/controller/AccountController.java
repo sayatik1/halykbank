@@ -1,14 +1,12 @@
 package com.example.bankapp.controller;
 
 import com.example.bankapp.dto.AccountDto;
+import com.example.bankapp.entity.Account;
 import com.example.bankapp.entity.User;
 import com.example.bankapp.service.AccountService;
 import com.example.bankapp.service.UserService;
 import org.springframework.web.bind.annotation.*;
-import com.example.bankapp.entity.Account;
 
-
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -24,61 +22,45 @@ public class AccountController {
         this.userService = userService;
     }
 
-    // ===== CREATE ACCOUNT =====
     @PostMapping("/create/{userId}")
-    public AccountDto createAccount(@PathVariable Long userId) {
-        if (userId == null) {
-            throw new RuntimeException("User id is required");
-        }
-
+    public AccountDto create(@PathVariable Long userId) {
         User user = userService.getUserById(userId);
-        var account = accountService.createAccount(user);
+        Account account = accountService.createAccount(user);
 
         return new AccountDto(
                 account.getId(),
                 account.getAccountNumber(),
-                account.getBalance()
+                account.getBalance(),
+                userId,
+                0
         );
     }
 
-    // ===== GET USER ACCOUNTS =====
-    @GetMapping("/user/{userId}")
-    public List<AccountDto> getUserAccounts(@PathVariable Long userId) {
-        if (userId == null) {
-            throw new RuntimeException("User id is required");
-        }
-
-        return accountService.getUserAccounts(userId);
-    }
-
-    // ===== GET BALANCE =====
-    @GetMapping("/{accountId}/balance")
-    public BigDecimal getBalance(@PathVariable Long accountId) {
-        if (accountId == null) {
-            throw new RuntimeException("Account id is required");
-        }
-
-        return accountService.getBalance(accountId);
-    }
     @GetMapping
-    public List<AccountDto> getAllAccounts() {
+    public List<AccountDto> getAll() {
         return accountService.getAllAccounts();
     }
 
-    @GetMapping("/by-number/{accountNumber}")
-    public AccountDto getByAccountNumber(@PathVariable String accountNumber) {
-
-        Account account = accountService.getByAccountNumber(accountNumber);
-
-        return new AccountDto(
-                account.getId(),
-                account.getAccountNumber(),
-                account.getBalance()
-        );
+    @GetMapping("/user/{userId}")
+    public List<AccountDto> byUser(@PathVariable Long userId) {
+        return accountService.getUserAccounts(userId);
     }
 
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        Account account = accountService.getAccountById(id);
 
+        if (account.getTransactions() != null && !account.getTransactions().isEmpty()) {
+            throw new RuntimeException("Account has transactions");
+        }
+
+        accountService.delete(account);
+    }
 }
+
+
+
+
 
 
 
